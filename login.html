@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Owner Access — Curiositas.ai</title>
+  <!-- Block all search engines from indexing this page -->
+  <meta name="robots" content="noindex, nofollow, noarchive, nosnippet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,400&family=Source+Code+Pro:wght@300;400&display=swap" rel="stylesheet"/>
+  <style>
+    :root{--ink:#1a1510;--gold:#b8922a;--gold-light:#d4aa4a;--cream:#faf7f2;--border:#d8cfc2;--rust:#8b3a2a;--muted:#6b6357;--green:#3d7a52;}
+    *{box-sizing:border-box;margin:0;padding:0;}
+    body{background:var(--ink);font-family:'Source Code Pro',monospace;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px;}
+    .box{background:var(--cream);padding:48px 44px;max-width:420px;width:100%;border-top:3px solid var(--gold);}
+    .logo{font-family:'Cormorant Garamond',serif;font-size:1.6rem;font-style:italic;color:var(--gold);margin-bottom:6px;}
+    .sub{font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);margin-bottom:36px;}
+    label{display:block;font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);margin-bottom:8px;}
+    input[type=password]{width:100%;padding:12px 14px;font-family:'Source Code Pro',monospace;font-size:.95rem;border:1px solid var(--border);background:white;color:var(--ink);outline:none;transition:border-color .2s;margin-bottom:20px;letter-spacing:.1em;}
+    input[type=password]:focus{border-color:var(--gold);}
+    button{width:100%;background:var(--ink);color:var(--cream);border:none;padding:13px 20px;font-family:'Source Code Pro',monospace;font-size:11px;letter-spacing:.2em;text-transform:uppercase;cursor:pointer;transition:background .2s;}
+    button:hover{background:var(--gold);color:var(--ink);}
+    .error{background:#fdf0ee;border-left:3px solid var(--rust);padding:10px 14px;font-size:.85rem;color:var(--rust);margin-top:16px;display:none;}
+    .attempts{font-size:10px;color:var(--muted);text-align:center;margin-top:14px;letter-spacing:.05em;}
+    .lockout{background:#fdf0ee;border:1px solid var(--rust);padding:20px;text-align:center;color:var(--rust);font-size:.85rem;display:none;}
+    .lockout strong{display:block;font-size:1rem;margin-bottom:8px;}
+  </style>
+</head>
+<body>
+<div class="box">
+  <div class="logo">Curiositas.ai</div>
+  <div class="sub">Owner Access Only</div>
+
+  <div id="lockout-msg" class="lockout">
+    <strong>🔒 Too many failed attempts</strong>
+    Access is locked for <span id="lockout-timer">5:00</span>.<br/>
+    Please wait and try again.
+  </div>
+
+  <div id="login-form">
+    <label for="pw">Password</label>
+    <input type="password" id="pw" placeholder="Enter owner password" autocomplete="current-password"/>
+    <button onclick="tryLogin()">Enter →</button>
+    <div class="error" id="err-msg">Incorrect password. Please try again.</div>
+    <div class="attempts" id="attempts-left"></div>
+  </div>
+</div>
+
+<script>
+  // ── CONFIGURATION ──────────────────────────────
+  // Change this password to your own secret word.
+  // Use something only you know — mix letters, numbers, symbols.
+  // Example: "Curiositas2025!" or "MySecretAI#99"
+  const OWNER_PASSWORD = "Curiositas2025!";
+
+  // How many wrong attempts before lockout
+  const MAX_ATTEMPTS = 5;
+
+  // Lockout duration in seconds (300 = 5 minutes)
+  const LOCKOUT_SECONDS = 300;
+  // ───────────────────────────────────────────────
+
+  const STORAGE_KEY   = 'cai_login_attempts';
+  const LOCKOUT_KEY   = 'cai_lockout_until';
+
+  function getAttempts() { return parseInt(localStorage.getItem(STORAGE_KEY) || '0'); }
+  function setAttempts(n){ localStorage.setItem(STORAGE_KEY, n); }
+  function getLockout()  { return parseInt(localStorage.getItem(LOCKOUT_KEY) || '0'); }
+  function setLockout(t) { localStorage.setItem(LOCKOUT_KEY, t); }
+
+  function checkLockout() {
+    const until = getLockout();
+    if (!until) return false;
+    if (Date.now() < until) return true;
+    // Lockout expired — reset
+    localStorage.removeItem(LOCKOUT_KEY);
+    setAttempts(0);
+    return false;
+  }
+
+  function showLockout() {
+    document.getElementById('login-form').style.display = 'none';
+    document.getElementById('lockout-msg').style.display = 'block';
+    startCountdown();
+  }
+
+  function startCountdown() {
+    const interval = setInterval(() => {
+      const remaining = getLockout() - Date.now();
+      if (remaining <= 0) {
+        clearInterval(interval);
+        document.getElementById('lockout-msg').style.display = 'none';
+        document.getElementById('login-form').style.display = 'block';
+        setAttempts(0);
+        return;
+      }
+      const m = Math.floor(remaining / 60000);
+      const s = Math.floor((remaining % 60000) / 1000);
+      document.getElementById('lockout-timer').textContent =
+        m + ':' + String(s).padStart(2,'0');
+    }, 1000);
+  }
+
+  function tryLogin() {
+    if (checkLockout()) { showLockout(); return; }
+
+    const input = document.getElementById('pw').value;
+    const err   = document.getElementById('err-msg');
+    const attEl = document.getElementById('attempts-left');
+
+    // Hash comparison — simple but effective for a static site
+    if (input === OWNER_PASSWORD) {
+      // Set a session token so the guide page can verify
+      const token = btoa('curiositas-owner-' + new Date().toDateString());
+      sessionStorage.setItem('cai_owner_token', token);
+      setAttempts(0);
+      window.location.href = 'guide.html';
+    } else {
+      const attempts = getAttempts() + 1;
+      setAttempts(attempts);
+      err.style.display = 'block';
+      document.getElementById('pw').value = '';
+      document.getElementById('pw').focus();
+
+      const left = MAX_ATTEMPTS - attempts;
+      if (left <= 0) {
+        setLockout(Date.now() + LOCKOUT_SECONDS * 1000);
+        showLockout();
+      } else {
+        attEl.textContent = left + ' attempt' + (left === 1 ? '' : 's') + ' remaining before lockout';
+      }
+    }
+  }
+
+  // Allow Enter key
+  document.getElementById('pw').addEventListener('keydown', e => {
+    if (e.key === 'Enter') tryLogin();
+  });
+
+  // Check on load
+  if (checkLockout()) showLockout();
+</script>
+</body>
+</html>

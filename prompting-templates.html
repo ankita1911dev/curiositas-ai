@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Prompt Templates — Copy, Paste, Use — Curiositas.ai</title>
+  <meta name="description" content="Ready-to-use prompt templates for learning, writing, research, analysis, and structured output. Copy and paste into ChatGPT or Claude. Free from Curiositas.ai."/>
+  <meta name="robots" content="index, follow"/>
+  <link rel="canonical" href="https://www.curiositas.ai/prompting-templates.html"/>
+  <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,600;1,400&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,400&family=Source+Code+Pro:wght@300;400&display=swap" rel="stylesheet"/>
+  <style>
+    :root{--ink:#1a1510;--parchment:#f5f0e8;--cream:#faf7f2;--gold:#b8922a;--gold-light:#d4aa4a;--rust:#8b3a2a;--muted:#6b6357;--border:#d8cfc2;--green:#3d7a52;}
+    *{box-sizing:border-box;margin:0;padding:0;}
+    body{background:var(--cream);color:var(--ink);font-family:'EB Garamond',Georgia,serif;font-size:17px;line-height:1.75;}
+    header{background:var(--ink);padding:40px;}
+    header a{color:var(--gold-light);font-family:'Source Code Pro',monospace;font-size:11px;letter-spacing:.15em;text-decoration:none;}
+    header h1{font-family:'Cormorant Garamond',serif;font-size:2.2rem;font-weight:300;color:var(--parchment);margin-top:14px;}
+    header h1 em{font-style:italic;color:var(--gold-light);}
+    main{max-width:960px;margin:0 auto;padding:50px 40px 80px;}
+    h2{font-family:'Cormorant Garamond',serif;font-size:1.8rem;font-weight:400;margin:44px 0 16px;padding-bottom:8px;border-bottom:2px solid var(--gold);}
+    h2:first-child{margin-top:0;}
+    p{margin-bottom:1em;color:#3a3330;}
+    .template{background:white;border:1px solid var(--border);margin-bottom:24px;}
+    .t-header{background:var(--ink);color:var(--parchment);padding:13px 20px;display:flex;justify-content:space-between;align-items:center;gap:12px;}
+    .t-title{font-family:'Cormorant Garamond',serif;font-size:1.05rem;}
+    .copy-btn{font-family:'Source Code Pro',monospace;font-size:9px;letter-spacing:.15em;text-transform:uppercase;background:transparent;border:1px solid var(--gold);color:var(--gold-light);padding:5px 12px;cursor:pointer;transition:background .2s;white-space:nowrap;flex-shrink:0;}
+    .copy-btn:hover,.copy-btn.copied{background:var(--gold);color:var(--ink);}
+    .t-body{padding:20px 22px;font-family:'Source Code Pro',monospace;font-size:13px;line-height:1.8;white-space:pre-wrap;color:#2a2520;}
+    .t-body .ph{color:var(--gold);font-style:italic;}
+    .t-use{font-family:'Source Code Pro',monospace;font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);padding:9px 20px;border-top:1px solid var(--border);background:var(--parchment);}
+    footer{background:var(--ink);color:#504a42;padding:30px 40px;text-align:center;margin-top:40px;}
+    footer .fb{font-family:'Cormorant Garamond',serif;font-size:1.2rem;font-style:italic;color:var(--gold-light);display:block;margin-bottom:6px;}
+    footer p{font-family:'Source Code Pro',monospace;font-size:10px;letter-spacing:.12em;}
+    @media(max-width:640px){main{padding:28px 20px;}}
+  </style>
+</head>
+<body>
+<header>
+  <a href="index.html">← Back to Curiositas.ai</a>
+  <h1><em>Prompt</em> Templates</h1>
+</header>
+<main>
+<p>Copy any template, paste into ChatGPT or Claude, and replace the <span style="font-family:'Source Code Pro',monospace;font-size:.85rem;color:var(--gold);">[HIGHLIGHTED PLACEHOLDERS]</span> with your content.</p>
+
+<h2>Learning & Explaining</h2>
+
+<div class="template">
+  <div class="t-header"><span class="t-title">Explain any concept simply</span><button class="copy-btn" onclick="copyIt(this)">Copy</button></div>
+  <div class="t-body">You are an expert in <span class="ph">[SUBJECT]</span>. Explain <span class="ph">[CONCEPT]</span> to a <span class="ph">[AUDIENCE: e.g. 12-year-old / complete beginner / university student]</span>.
+
+Use:
+- Plain language appropriate for the audience
+- One concrete real-world analogy
+- One short example
+
+Length: <span class="ph">[short (2–3 paragraphs) OR medium (5–6 paragraphs)]</span></div>
+  <div class="t-use">Use for: lessons, study guides, explaining things to family</div>
+</div>
+
+<div class="template">
+  <div class="t-header"><span class="t-title">Step-by-step how-to guide</span><button class="copy-btn" onclick="copyIt(this)">Copy</button></div>
+  <div class="t-body">Write a step-by-step guide for: <span class="ph">[TASK]</span>
+
+Audience: <span class="ph">[WHO WILL READ THIS]</span>
+Assume they know: <span class="ph">[WHAT THEY ALREADY KNOW]</span>
+
+Format: Numbered steps. Each step = one action + a brief explanation of why.
+End with: a one-sentence summary of what they accomplished.</div>
+  <div class="t-use">Use for: tutorials, homework help, teaching others</div>
+</div>
+
+<h2>Research & Analysis</h2>
+
+<div class="template">
+  <div class="t-header"><span class="t-title">Analyse a piece of text</span><button class="copy-btn" onclick="copyIt(this)">Copy</button></div>
+  <div class="t-body">Analyse the following <span class="ph">[TYPE: article / essay / report / argument]</span>:
+
+&lt;document&gt;
+<span class="ph">[PASTE YOUR TEXT HERE]</span>
+&lt;/document&gt;
+
+Provide:
+1. Main argument or point (1–2 sentences)
+2. Key supporting points (bullet list, max 5)
+3. Any assumptions or weaknesses in the argument
+4. Your overall assessment: is this convincing? Why?
+
+Be concise and honest.</div>
+  <div class="t-use">Use for: homework, research, reading comprehension</div>
+</div>
+
+<div class="template">
+  <div class="t-header"><span class="t-title">Compare two things</span><button class="copy-btn" onclick="copyIt(this)">Copy</button></div>
+  <div class="t-body">Compare <span class="ph">[OPTION A]</span> vs <span class="ph">[OPTION B]</span> for the purpose of: <span class="ph">[USE CASE]</span>
+
+Structure:
+- 2-sentence summary of each option
+- Comparison table with these dimensions: <span class="ph">[e.g. cost, ease of use, speed, accuracy]</span>
+- When to choose A
+- When to choose B
+- Your recommendation for my specific situation</div>
+  <div class="t-use">Use for: decisions, product comparisons, pros/cons</div>
+</div>
+
+<h2>Writing Help</h2>
+
+<div class="template">
+  <div class="t-header"><span class="t-title">Improve my writing</span><button class="copy-btn" onclick="copyIt(this)">Copy</button></div>
+  <div class="t-body">Rewrite the following text to be clearer, more concise, and easier to read.
+
+Keep the same meaning and structure. Do not add new information.
+Target reading level: <span class="ph">[e.g. simple / professional / academic]</span>
+
+&lt;original&gt;
+<span class="ph">[PASTE YOUR TEXT HERE]</span>
+&lt;/original&gt;</div>
+  <div class="t-use">Use for: essays, emails, reports, any writing</div>
+</div>
+
+<h2>Structured Output</h2>
+
+<div class="template">
+  <div class="t-header"><span class="t-title">Get a JSON response</span><button class="copy-btn" onclick="copyIt(this)">Copy</button></div>
+  <div class="t-body">Generate <span class="ph">[NUMBER]</span> examples of <span class="ph">[WHAT TO GENERATE]</span>.
+
+Respond ONLY with a valid JSON array. No preamble. No markdown code fences.
+
+Schema for each item:
+{
+  "<span class="ph">field1</span>": <span class="ph">string</span>,
+  "<span class="ph">field2</span>": <span class="ph">number</span>,
+  "<span class="ph">field3</span>": <span class="ph">string</span>
+}</div>
+  <div class="t-use">Use for: generating data, building apps, structured content</div>
+</div>
+
+<div class="template">
+  <div class="t-header"><span class="t-title">Step-by-step reasoning (Chain-of-Thought)</span><button class="copy-btn" onclick="copyIt(this)">Copy</button></div>
+  <div class="t-body">Problem: <span class="ph">[YOUR QUESTION OR PROBLEM]</span>
+
+Think through this carefully, step by step, before giving your final answer.
+
+Format your response exactly like this:
+Reasoning: [your step-by-step thinking, numbered]
+Answer: [your final, clear answer in 1–3 sentences]</div>
+  <div class="t-use">Use for: maths, logic problems, complex questions, decision-making</div>
+</div>
+
+</main>
+<footer>
+  <span class="fb">Curiositas.ai</span>
+  <p>© 2025 Curiositas.ai · <a href="index.html" style="color:#706a60;">Home</a> · <a href="privacy.html" style="color:#706a60;">Privacy Policy</a></p>
+</footer>
+<script>
+function copyIt(btn){
+  const text = btn.closest('.template').querySelector('.t-body').innerText;
+  navigator.clipboard.writeText(text).then(()=>{
+    btn.textContent='Copied!';
+    btn.classList.add('copied');
+    setTimeout(()=>{ btn.textContent='Copy'; btn.classList.remove('copied'); }, 2000);
+  });
+}
+</script>
+</body>
+</html>

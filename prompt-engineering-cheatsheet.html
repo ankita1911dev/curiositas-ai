@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Prompt Engineering Cheat Sheet — Curiositas.ai</title>
+  <meta name="description" content="A complete prompt engineering cheat sheet — techniques, templates, anti-patterns and output control, explained in plain English. Free from Curiositas.ai."/>
+  <meta name="robots" content="index, follow"/>
+  <link rel="canonical" href="https://www.curiositas.ai/prompt-engineering-cheatsheet.html"/>
+  <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,600;1,400&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,400&family=Source+Code+Pro:wght@300;400&display=swap" rel="stylesheet"/>
+  <style>
+    :root{--ink:#1a1510;--parchment:#f5f0e8;--cream:#faf7f2;--gold:#b8922a;--gold-light:#d4aa4a;--rust:#8b3a2a;--muted:#6b6357;--border:#d8cfc2;--green:#3d7a52;}
+    *{box-sizing:border-box;margin:0;padding:0;}
+    body{background:var(--cream);color:var(--ink);font-family:'EB Garamond',Georgia,serif;font-size:17px;line-height:1.75;}
+    header{background:var(--ink);padding:40px;}
+    header a{color:var(--gold-light);font-family:'Source Code Pro',monospace;font-size:11px;letter-spacing:.15em;text-decoration:none;}
+    header h1{font-family:'Cormorant Garamond',serif;font-size:2.2rem;font-weight:300;color:var(--parchment);margin-top:14px;}
+    header h1 em{font-style:italic;color:var(--gold-light);}
+    main{max-width:960px;margin:0 auto;padding:50px 40px 80px;}
+    h2{font-family:'Cormorant Garamond',serif;font-size:1.8rem;font-weight:400;margin:44px 0 16px;padding-bottom:8px;border-bottom:2px solid var(--gold);}
+    h2:first-child{margin-top:0;}
+    h3{font-family:'Cormorant Garamond',serif;font-size:1.2rem;font-weight:500;margin:24px 0 8px;}
+    p{margin-bottom:.9em;color:#3a3330;}
+    .grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:16px 0 28px;}
+    .card{border:1px solid var(--border);padding:20px 22px;background:white;}
+    .card .label{font-family:'Source Code Pro',monospace;font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);margin-bottom:10px;display:block;}
+    code{font-family:'Source Code Pro',monospace;font-size:13px;background:#f0ebe0;padding:2px 6px;color:var(--rust);}
+    pre{background:var(--ink);color:#e8dfd0;padding:20px 24px;font-family:'Source Code Pro',monospace;font-size:13px;line-height:1.7;margin:12px 0 24px;overflow-x:auto;}
+    pre em{color:var(--gold-light);font-style:normal;}
+    .tip{background:#eef6f1;border-left:3px solid var(--green);padding:14px 18px;margin:16px 0;font-size:.93rem;}
+    .warn{background:#fdf4ec;border-left:3px solid var(--gold);padding:14px 18px;margin:16px 0;font-size:.93rem;}
+    table{width:100%;border-collapse:collapse;margin:14px 0 26px;}
+    th{background:var(--ink);color:var(--parchment);font-family:'Source Code Pro',monospace;font-size:9px;letter-spacing:.15em;text-transform:uppercase;padding:9px 12px;text-align:left;}
+    td{padding:9px 12px;border-bottom:1px solid var(--border);font-size:.91rem;}
+    tr:hover td{background:var(--parchment);}
+    footer{background:var(--ink);color:#504a42;padding:30px 40px;text-align:center;margin-top:40px;}
+    footer .fb{font-family:'Cormorant Garamond',serif;font-size:1.2rem;font-style:italic;color:var(--gold-light);display:block;margin-bottom:6px;}
+    footer p{font-family:'Source Code Pro',monospace;font-size:10px;letter-spacing:.12em;}
+    @media(max-width:640px){.grid{grid-template-columns:1fr;}main{padding:32px 20px;}}
+  </style>
+</head>
+<body>
+<header>
+  <a href="index.html">← Back to Curiositas.ai</a>
+  <h1><em>Prompt Engineering</em> — Cheat Sheet</h1>
+</header>
+<main>
+
+<h2>The 4 Core Techniques</h2>
+<div class="grid">
+  <div class="card">
+    <span class="label">Zero-Shot</span>
+    <p>Ask without examples. Works for clear, simple tasks. Just describe what you want.</p>
+    <pre><em>Example:</em> "Summarise this in one sentence."</pre>
+  </div>
+  <div class="card">
+    <span class="label">Few-Shot</span>
+    <p>Give 2–3 examples before your actual question. Locks in the format and tone you want.</p>
+    <pre><em>Example 1:</em> Input → Output
+<em>Example 2:</em> Input → Output
+<em>Now do:</em> [your input]</pre>
+  </div>
+  <div class="card">
+    <span class="label">Chain-of-Thought (CoT)</span>
+    <p>Ask the AI to reason step by step. Dramatically improves accuracy on complex or maths problems.</p>
+    <pre>"Think step by step before answering."</pre>
+  </div>
+  <div class="card">
+    <span class="label">Role Prompting</span>
+    <p>Give the AI a persona. This shapes vocabulary, expertise level, and tone.</p>
+    <pre>"You are a friendly science teacher
+explaining to a 12-year-old.
+Explain what gravity is."</pre>
+  </div>
+</div>
+
+<h2>Anatomy of a Strong Prompt</h2>
+<table>
+  <thead><tr><th>Part</th><th>What it does</th><th>Example</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Role</strong></td><td>Sets expertise and tone</td><td>"You are a data scientist…"</td></tr>
+    <tr><td><strong>Context</strong></td><td>Gives background info</td><td>"The reader is a 12-year-old…"</td></tr>
+    <tr><td><strong>Task</strong></td><td>The clear instruction</td><td>"Explain gradient descent…"</td></tr>
+    <tr><td><strong>Constraints</strong></td><td>Limits scope or format</td><td>"In 3 bullet points, no jargon."</td></tr>
+    <tr><td><strong>Output format</strong></td><td>Exact shape of the answer</td><td>"Return as a JSON object."</td></tr>
+  </tbody>
+</table>
+
+<h2>Controlling the Output Format</h2>
+<pre>"Respond ONLY in valid JSON. No preamble, no markdown.
+Schema: { "answer": string, "confidence": "high"|"medium"|"low" }"</pre>
+<div class="tip">
+  <strong>Tip:</strong> Use XML-style delimiters to separate your content from your instructions — e.g. wrap pasted text in <code>&lt;document&gt;...&lt;/document&gt;</code>. This stops the AI from confusing your content with its instructions.
+</div>
+
+<h2>Common Mistakes (Anti-Patterns)</h2>
+<div class="grid">
+  <div class="card">
+    <span class="label">❌ Too vague</span>
+    <p><code>"Write something about AI"</code> — no scope, no format, no audience. The AI will guess, usually wrongly.</p>
+  </div>
+  <div class="card">
+    <span class="label">❌ Only negatives</span>
+    <p><code>"Don't use jargon"</code> → instead say: <code>"Use plain English, maximum 8th-grade reading level."</code></p>
+  </div>
+  <div class="card">
+    <span class="label">❌ No output format</span>
+    <p>Without specifying format, you get inconsistency. Always state: paragraph, bullet list, table, JSON, etc.</p>
+  </div>
+  <div class="card">
+    <span class="label">❌ Too many tasks at once</span>
+    <p>One prompt, one task. Cramming five requests in one prompt reduces quality on all of them.</p>
+  </div>
+</div>
+
+<h2>Temperature Quick Reference</h2>
+<table>
+  <thead><tr><th>Temperature</th><th>Effect</th><th>Best for</th></tr></thead>
+  <tbody>
+    <tr><td>0.0</td><td>Deterministic, consistent</td><td>Code, factual Q&amp;A, structured data</td></tr>
+    <tr><td>0.3–0.7</td><td>Balanced</td><td>Summaries, explanations, analysis</td></tr>
+    <tr><td>0.8–1.0</td><td>Creative, varied</td><td>Brainstorming, fiction, ideation</td></tr>
+  </tbody>
+</table>
+<div class="warn"><strong>Remember:</strong> Higher temperature ≠ smarter. For accuracy-critical tasks, use 0 or low temperature.</div>
+
+<h2>Quick-Reference Prompt Starters</h2>
+<table>
+  <thead><tr><th>Goal</th><th>Starter phrase</th></tr></thead>
+  <tbody>
+    <tr><td>Explain simply</td><td>"Explain [X] to a 12-year-old with no tech background."</td></tr>
+    <tr><td>Summarise</td><td>"Summarise the key points of the following in 5 bullets:"</td></tr>
+    <tr><td>Improve writing</td><td>"Rewrite this to be clearer and more concise, keeping the same meaning:"</td></tr>
+    <tr><td>Generate ideas</td><td>"Give me 10 creative ideas for [X]. Be unexpected."</td></tr>
+    <tr><td>Analyse</td><td>"What are the 3 strongest arguments for and against [X]?"</td></tr>
+    <tr><td>Structured output</td><td>"Return your answer as a JSON array with keys: title, summary, tags."</td></tr>
+    <tr><td>Step-by-step</td><td>"Walk me through [X] step by step. Explain each step in plain English."</td></tr>
+  </tbody>
+</table>
+
+</main>
+<footer>
+  <span class="fb">Curiositas.ai</span>
+  <p>© 2025 Curiositas.ai · <a href="index.html" style="color:#706a60;">Home</a> · <a href="privacy.html" style="color:#706a60;">Privacy Policy</a></p>
+</footer>
+</body>
+</html>

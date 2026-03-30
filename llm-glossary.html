@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>AI Glossary in Plain English — Curiositas.ai</title>
+  <meta name="description" content="Every AI term explained in plain English — tokens, transformers, RLHF, hallucination, embeddings and more. Searchable. Free from Curiositas.ai."/>
+  <meta name="robots" content="index, follow"/>
+  <link rel="canonical" href="https://www.curiositas.ai/llm-glossary.html"/>
+  <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,600;1,400&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,400&family=Source+Code+Pro:wght@300;400&display=swap" rel="stylesheet"/>
+  <style>
+    :root{--ink:#1a1510;--parchment:#f5f0e8;--cream:#faf7f2;--gold:#b8922a;--gold-light:#d4aa4a;--rust:#8b3a2a;--muted:#6b6357;--border:#d8cfc2;}
+    *{box-sizing:border-box;margin:0;padding:0;}
+    body{background:var(--cream);color:var(--ink);font-family:'EB Garamond',Georgia,serif;font-size:17px;line-height:1.75;}
+    header{background:var(--ink);padding:40px;}
+    header a{color:var(--gold-light);font-family:'Source Code Pro',monospace;font-size:11px;letter-spacing:.15em;text-decoration:none;}
+    header h1{font-family:'Cormorant Garamond',serif;font-size:2.2rem;font-weight:300;color:var(--parchment);margin-top:14px;}
+    header h1 em{font-style:italic;color:var(--gold-light);}
+    .search-wrap{background:var(--parchment);border-bottom:1px solid var(--border);padding:20px 40px;position:sticky;top:0;z-index:50;}
+    .search-wrap input{max-width:520px;width:100%;padding:11px 16px;font-family:'EB Garamond',serif;font-size:1rem;border:1px solid var(--border);background:white;color:var(--ink);outline:none;}
+    .search-wrap input:focus{border-color:var(--gold);}
+    main{max-width:960px;margin:0 auto;padding:40px 40px 80px;}
+    .letter-group{margin-bottom:32px;}
+    .letter-heading{font-family:'Cormorant Garamond',serif;font-size:2rem;font-weight:300;color:var(--gold);border-bottom:1px solid var(--border);padding-bottom:6px;margin-bottom:14px;}
+    .term{padding:14px 0;border-bottom:1px solid #ece7dc;}
+    .term dt{font-family:'Cormorant Garamond',serif;font-size:1.2rem;font-weight:500;}
+    .term dd{color:#3a3330;margin-top:4px;font-size:.94rem;}
+    .tag{font-family:'Source Code Pro',monospace;font-size:9px;letter-spacing:.15em;text-transform:uppercase;padding:2px 8px;border:1px solid var(--border);color:var(--muted);margin-left:8px;vertical-align:middle;}
+    .no-results{text-align:center;padding:60px 20px;color:var(--muted);font-style:italic;}
+    footer{background:var(--ink);color:#504a42;padding:30px 40px;text-align:center;margin-top:0;}
+    footer .fb{font-family:'Cormorant Garamond',serif;font-size:1.2rem;font-style:italic;color:var(--gold-light);display:block;margin-bottom:6px;}
+    footer p{font-family:'Source Code Pro',monospace;font-size:10px;letter-spacing:.12em;}
+    @media(max-width:640px){main,.search-wrap{padding-left:20px;padding-right:20px;}}
+  </style>
+</head>
+<body>
+<header>
+  <a href="index.html">← Back to Curiositas.ai</a>
+  <h1><em>AI Glossary</em> — Plain English</h1>
+</header>
+<div class="search-wrap">
+  <input type="text" id="search" placeholder="Search terms… e.g. 'attention', 'token', 'hallucination'" oninput="filterTerms()"/>
+</div>
+<main id="glossary">
+  <div id="no-results" class="no-results" style="display:none">No terms match your search. Try a different word.</div>
+
+  <div class="letter-group"><div class="letter-heading">A</div><dl>
+    <div class="term"><dt>Attention Mechanism <span class="tag">Architecture</span></dt><dd>The core innovation of transformer models. It lets every word in a sentence look at every other word and decide how relevant they are to each other — so the model understands context across the whole sentence, not just nearby words.</dd></div>
+    <div class="term"><dt>Autoregressive <span class="tag">Inference</span></dt><dd>The way LLMs generate text: one token (word piece) at a time, each new token predicted from all the previous ones. This is why AI cannot "go back and edit" once it has written something — it only moves forward.</dd></div>
+    <div class="term"><dt>Alignment <span class="tag">Safety</span></dt><dd>The challenge of making AI systems do what humans actually want — not just what they were literally told. Includes techniques like RLHF (human feedback training) and Constitutional AI to make models helpful, honest, and safe.</dd></div>
+    <div class="term"><dt>API (Application Programming Interface) <span class="tag">Technical</span></dt><dd>A way for software to talk to other software. When apps like ChatGPT Plus plugins or custom chatbots use an AI model, they communicate through an API.</dd></div>
+  </dl></div>
+
+  <div class="letter-group"><div class="letter-heading">C</div><dl>
+    <div class="term"><dt>Context Window <span class="tag">Core Concept</span></dt><dd>The maximum amount of text an AI can "see" at once — both the input you send it AND its response. Think of it as the AI's working memory. Once you exceed the context window, it forgets the earlier parts of the conversation.</dd></div>
+    <div class="term"><dt>Chain-of-Thought (CoT) <span class="tag">Prompting</span></dt><dd>A prompting technique where you ask the AI to reason step by step before giving a final answer. This dramatically improves accuracy on complex problems — especially maths and logic.</dd></div>
+  </dl></div>
+
+  <div class="letter-group"><div class="letter-heading">E</div><dl>
+    <div class="term"><dt>Embedding <span class="tag">Representation</span></dt><dd>A list of numbers that represents a word or sentence's meaning. Words with similar meanings have similar numbers — so "king" and "queen" are mathematically close to each other. AI uses embeddings to understand relationships between concepts.</dd></div>
+    <div class="term"><dt>Emergent Ability <span class="tag">Scaling</span></dt><dd>A capability that suddenly appears in a large AI model but was absent in smaller versions — not because engineers programmed it, but because the model became large enough. Examples include multi-step reasoning and language translation.</dd></div>
+  </dl></div>
+
+  <div class="letter-group"><div class="letter-heading">F</div><dl>
+    <div class="term"><dt>Fine-tuning <span class="tag">Training</span></dt><dd>Taking a pre-trained model and training it further on a smaller, specific dataset to specialise its behaviour. Much cheaper than training from scratch. Used to make general models better at medical diagnosis, legal writing, coding, etc.</dd></div>
+    <div class="term"><dt>Few-Shot Learning <span class="tag">Prompting</span></dt><dd>Giving the AI 2–5 examples of what you want in your prompt, before asking it to do the real task. This "teaches" it your desired format and tone without changing the model itself.</dd></div>
+  </dl></div>
+
+  <div class="letter-group"><div class="letter-heading">G</div><dl>
+    <div class="term"><dt>Generative AI <span class="tag">Category</span></dt><dd>AI systems that create new content — text, images, code, audio, video — rather than just classifying or finding existing content. ChatGPT, Claude, Midjourney, and DALL-E are all generative AI.</dd></div>
+    <div class="term"><dt>GPT (Generative Pre-trained Transformer) <span class="tag">Architecture</span></dt><dd>A type of large language model created by OpenAI. "Generative" means it creates text. "Pre-trained" means it learned from a huge dataset first. "Transformer" is the neural network architecture it uses.</dd></div>
+  </dl></div>
+
+  <div class="letter-group"><div class="letter-heading">H</div><dl>
+    <div class="term"><dt>Hallucination <span class="tag">Risk</span></dt><dd>When an AI generates something that sounds completely confident and plausible — but is factually wrong. It happens because AI optimises for fluency and coherence, not truth. Always verify important facts from AI outputs.</dd></div>
+    <div class="term"><dt>Hyperparameter <span class="tag">Technical</span></dt><dd>Settings that control how a model behaves during training or generation — like temperature (randomness), learning rate, and context window size. Not learned by the model; set by engineers.</dd></div>
+  </dl></div>
+
+  <div class="letter-group"><div class="letter-heading">L</div><dl>
+    <div class="term"><dt>Large Language Model (LLM) <span class="tag">Core Concept</span></dt><dd>A neural network trained on enormous amounts of text to predict the next token. LLMs are the technology behind ChatGPT, Claude, Gemini, and most modern AI assistants. "Large" refers to the number of parameters (billions to trillions).</dd></div>
+    <div class="term"><dt>Latent Space <span class="tag">Representation</span></dt><dd>The internal mathematical space where the AI represents concepts. Similar ideas sit close together. The model "thinks" in this space — translating your words into numbers, processing them, then translating back to words.</dd></div>
+  </dl></div>
+
+  <div class="letter-group"><div class="letter-heading">P</div><dl>
+    <div class="term"><dt>Parameter <span class="tag">Architecture</span></dt><dd>A number inside the neural network that gets adjusted during training. Modern LLMs have billions or trillions of parameters. More parameters generally means more capability — but also more computing power needed.</dd></div>
+    <div class="term"><dt>Pre-training <span class="tag">Training</span></dt><dd>The first and most expensive phase of training — where the model reads enormous amounts of text and learns language patterns by predicting the next token over and over. GPT-4 likely cost tens of millions of dollars to pre-train.</dd></div>
+    <div class="term"><dt>Prompt <span class="tag">Interaction</span></dt><dd>The input text you send to a language model. Everything the model sees (your question, any context, system instructions) makes up the prompt. Writing good prompts is called prompt engineering.</dd></div>
+    <div class="term"><dt>Prompt Engineering <span class="tag">Skill</span></dt><dd>The practice of crafting inputs to AI models to get reliably useful, accurate, and well-formatted outputs. A learnable skill — the better you are at prompting, the more useful AI becomes for you.</dd></div>
+  </dl></div>
+
+  <div class="letter-group"><div class="letter-heading">R</div><dl>
+    <div class="term"><dt>RAG (Retrieval-Augmented Generation) <span class="tag">Architecture</span></dt><dd>A technique that combines an LLM with a search system. When you ask a question, relevant documents are fetched and inserted into the prompt, so the AI answers based on real, current data — reducing hallucination.</dd></div>
+    <div class="term"><dt>RLHF (Reinforcement Learning from Human Feedback) <span class="tag">Training</span></dt><dd>A training method where humans rate which AI responses are better. Those ratings train a "reward model", which then guides the AI to produce more helpful, honest, and safe responses. Used by OpenAI, Anthropic, and Google.</dd></div>
+  </dl></div>
+
+  <div class="letter-group"><div class="letter-heading">S</div><dl>
+    <div class="term"><dt>System Prompt <span class="tag">Prompting</span></dt><dd>Hidden instructions given to an AI before a conversation starts — setting its persona, rules, and behaviour. When ChatGPT acts as a customer service agent for a company, that company's instructions are in the system prompt.</dd></div>
+  </dl></div>
+
+  <div class="letter-group"><div class="letter-heading">T</div><dl>
+    <div class="term"><dt>Temperature <span class="tag">Sampling</span></dt><dd>A setting that controls how random or creative the AI's output is. Temperature 0 = always picks the most likely next word (predictable). Temperature 1 = more random and creative. Higher isn't smarter — use low temperature for factual tasks.</dd></div>
+    <div class="term"><dt>Token <span class="tag">Core Concept</span></dt><dd>The basic unit of text that AI reads and generates. Not quite a word — more like a word-piece. "unbelievable" might be 3 tokens: "un", "believ", "able". AI counts costs and context limits in tokens, not words. ~750 words ≈ 1,000 tokens.</dd></div>
+    <div class="term"><dt>Transformer <span class="tag">Architecture</span></dt><dd>The neural network architecture behind almost every modern AI language model. Introduced in the 2017 paper "Attention Is All You Need". Its key innovation — the attention mechanism — lets the model understand context across long sequences of text.</dd></div>
+  </dl></div>
+
+  <div class="letter-group"><div class="letter-heading">Z</div><dl>
+    <div class="term"><dt>Zero-Shot Prompting <span class="tag">Prompting</span></dt><dd>Asking an AI to do a task with no examples provided in the prompt. Relies entirely on what the model learned during training. Works well for common tasks; use few-shot for unusual formats.</dd></div>
+  </dl></div>
+
+</main>
+<footer>
+  <span class="fb">Curiositas.ai</span>
+  <p>© 2025 Curiositas.ai · <a href="index.html" style="color:#706a60;">Home</a> · <a href="privacy.html" style="color:#706a60;">Privacy Policy</a></p>
+</footer>
+<script>
+function filterTerms(){
+  const q = document.getElementById('search').value.toLowerCase();
+  let anyVisible = false;
+  document.querySelectorAll('.term').forEach(t => {
+    const show = t.textContent.toLowerCase().includes(q);
+    t.style.display = show ? '' : 'none';
+    if(show) anyVisible = true;
+  });
+  document.querySelectorAll('.letter-group').forEach(g => {
+    const vis = [...g.querySelectorAll('.term')].some(t => t.style.display !== 'none');
+    g.style.display = vis ? '' : 'none';
+  });
+  document.getElementById('no-results').style.display = anyVisible ? 'none' : 'block';
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Owner's Guide — Curiositas.ai</title>
+  <meta name="robots" content="noindex, nofollow, noarchive, nosnippet"/>
+  <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,600;1,400&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,400&family=Source+Code+Pro:wght@300;400&display=swap" rel="stylesheet"/>
+  <style>
+    :root{--ink:#1a1510;--parchment:#f5f0e8;--cream:#faf7f2;--gold:#b8922a;--gold-light:#d4aa4a;--rust:#8b3a2a;--muted:#6b6357;--border:#d8cfc2;--green:#3d7a52;}
+    *{box-sizing:border-box;margin:0;padding:0;}
+    body{background:var(--cream);color:var(--ink);font-family:'EB Garamond',Georgia,serif;font-size:18px;line-height:1.75;}
+
+    /* Auth wall — shown while checking */
+    #auth-wall{position:fixed;inset:0;background:var(--ink);z-index:9999;display:flex;align-items:center;justify-content:center;}
+    #auth-wall p{color:var(--gold-light);font-family:'Source Code Pro',monospace;font-size:11px;letter-spacing:.2em;}
+
+    header{background:var(--ink);padding:32px 40px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px;}
+    .header-left h1{font-family:'Cormorant Garamond',serif;font-size:1.8rem;font-weight:300;color:var(--parchment);}
+    .header-left h1 em{color:var(--gold-light);font-style:italic;}
+    .header-left p{color:#a09080;font-size:.85rem;margin-top:4px;font-family:'Source Code Pro',monospace;font-size:10px;letter-spacing:.1em;}
+    .header-right{display:flex;gap:12px;align-items:center;}
+    .btn-outline{font-family:'Source Code Pro',monospace;font-size:10px;letter-spacing:.15em;text-transform:uppercase;padding:8px 16px;border:1px solid var(--gold);color:var(--gold-light);text-decoration:none;transition:background .2s;}
+    .btn-outline:hover{background:var(--gold);color:var(--ink);}
+    .btn-logout{font-family:'Source Code Pro',monospace;font-size:10px;letter-spacing:.15em;text-transform:uppercase;padding:8px 16px;background:transparent;border:1px solid #444;color:#706a60;cursor:pointer;transition:all .2s;}
+    .btn-logout:hover{border-color:var(--rust);color:var(--rust);}
+
+    /* Sidebar + content layout */
+    .wrapper{display:grid;grid-template-columns:240px 1fr;min-height:calc(100vh - 80px);}
+    aside{background:#f0ebe0;border-right:1px solid var(--border);padding:32px 0;position:sticky;top:0;height:100vh;overflow-y:auto;}
+    aside nav a{display:block;padding:9px 24px;font-family:'Source Code Pro',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);text-decoration:none;border-left:3px solid transparent;transition:all .15s;}
+    aside nav a:hover{color:var(--ink);background:rgba(0,0,0,.04);}
+    aside nav a.active{color:var(--gold);border-left-color:var(--gold);background:rgba(184,146,42,.07);}
+    aside .nav-section{font-family:'Source Code Pro',monospace;font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:var(--border);padding:20px 24px 6px;}
+    main{padding:48px 56px;max-width:860px;}
+
+    h2{font-family:'Cormorant Garamond',serif;font-size:1.9rem;font-weight:400;margin:48px 0 16px;padding-bottom:8px;border-bottom:2px solid var(--gold);}
+    h2:first-child{margin-top:0;}
+    h3{font-family:'Cormorant Garamond',serif;font-size:1.3rem;font-weight:500;margin:28px 0 10px;}
+    p{margin-bottom:1em;color:#3a3330;}
+    ul,ol{margin:12px 0 20px 24px;}
+    li{margin-bottom:8px;color:#3a3330;}
+
+    .steps{margin:20px 0;}
+    .step{display:grid;grid-template-columns:44px 1fr;gap:18px;align-items:start;margin-bottom:18px;}
+    .step-num{background:var(--ink);color:var(--gold-light);font-family:'Cormorant Garamond',serif;font-size:1.4rem;font-weight:300;width:44px;height:44px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+    .step-body strong{display:block;font-family:'Cormorant Garamond',serif;font-size:1.1rem;margin-bottom:4px;}
+
+    pre,code{font-family:'Source Code Pro',monospace;font-size:13px;}
+    pre{background:var(--ink);color:#e8dfd0;padding:20px 24px;margin:12px 0;overflow-x:auto;line-height:1.8;border-radius:0;}
+    pre .hl{color:var(--gold-light);}
+    pre .cm{color:#7a6a5a;}
+    code{background:#f0ebe0;padding:2px 7px;color:var(--rust);}
+
+    .tip{background:#eef6f1;border-left:4px solid var(--green);padding:14px 18px;margin:18px 0;font-size:.95rem;}
+    .tip strong{color:var(--green);}
+    .warn{background:#fdf4ec;border-left:4px solid var(--gold);padding:14px 18px;margin:18px 0;font-size:.95rem;}
+    .warn strong{color:var(--gold);}
+    .danger{background:#fdf0ee;border-left:4px solid var(--rust);padding:14px 18px;margin:18px 0;font-size:.95rem;}
+    .danger strong{color:var(--rust);}
+
+    .file-map{background:white;border:1px solid var(--border);padding:20px;margin:18px 0;}
+    .file-row{display:grid;grid-template-columns:180px 1fr;gap:14px;padding:9px 0;border-bottom:1px solid var(--border);}
+    .file-row:last-child{border-bottom:none;}
+    .file-name{font-family:'Source Code Pro',monospace;font-size:12px;color:var(--rust);}
+    .file-role{font-size:.9rem;color:#3a3330;}
+    .file-role strong{color:var(--green);}
+
+    table{width:100%;border-collapse:collapse;margin:14px 0 22px;font-size:.92rem;}
+    th{background:var(--ink);color:var(--parchment);font-family:'Source Code Pro',monospace;font-size:9px;letter-spacing:.15em;text-transform:uppercase;padding:9px 12px;text-align:left;}
+    td{padding:9px 12px;border-bottom:1px solid var(--border);}
+    tr:hover td{background:var(--parchment);}
+
+    .badge{display:inline-block;font-family:'Source Code Pro',monospace;font-size:9px;letter-spacing:.1em;text-transform:uppercase;padding:3px 8px;border:1px solid;margin-left:8px;vertical-align:middle;}
+    .badge-free{border-color:var(--green);color:var(--green);}
+    .badge-paid{border-color:var(--gold);color:var(--gold);}
+
+    @media(max-width:768px){
+      .wrapper{grid-template-columns:1fr;}
+      aside{position:static;height:auto;}
+      main{padding:28px 20px;}
+      .file-row{grid-template-columns:1fr;}
+    }
+  </style>
+</head>
+<body>
+
+<!-- Auth wall shown until JS verifies session -->
+<div id="auth-wall"><p>Verifying access…</p></div>
+
+<header>
+  <div class="header-left">
+    <h1>Curiositas.ai — <em>Owner's Guide</em></h1>
+    <p>🔒 Private · Not indexed by Google · Only you can see this page</p>
+  </div>
+  <div class="header-right">
+    <a href="../index.html" class="btn-outline">View Live Site →</a>
+    <button class="btn-logout" onclick="logout()">Log Out</button>
+  </div>
+</header>
+
+<div class="wrapper">
+  <!-- SIDEBAR NAV -->
+  <aside>
+    <div class="nav-section">Getting Started</div>
+    <nav>
+      <a href="#files" onclick="setActive(this)">Your 3 Files</a>
+      <a href="#github" onclick="setActive(this)">GitHub Setup</a>
+      <a href="#daily" onclick="setActive(this)">Daily Updates</a>
+      <div class="nav-section">Content</div>
+      <a href="#lessons" onclick="setActive(this)">Add a Lesson</a>
+      <a href="#edit" onclick="setActive(this)">Edit Content</a>
+      <a href="#faq" onclick="setActive(this)">Edit FAQs</a>
+      <a href="#resources" onclick="setActive(this)">Add Resources</a>
+      <div class="nav-section">Growth</div>
+      <a href="#analytics" onclick="setActive(this)">Google Analytics</a>
+      <a href="#adsense" onclick="setActive(this)">Google AdSense</a>
+      <a href="#monetise" onclick="setActive(this)">Earn Money</a>
+      <div class="nav-section">Help</div>
+      <a href="#troubleshoot" onclick="setActive(this)">Troubleshooting</a>
+      <a href="#password" onclick="setActive(this)">Change Password</a>
+    </nav>
+  </aside>
+
+  <!-- MAIN CONTENT -->
+  <main>
+
+    <!-- ── FILES ── -->
+    <h2 id="files">🗂 Your 3 Files — That's All You Need</h2>
+    <div class="file-map">
+      <div class="file-row">
+        <span class="file-name">content.js</span>
+        <span class="file-role"><strong>✏️ The only file you ever edit.</strong> All text, lessons, FAQs, and settings live here. Think of it as your notebook.</span>
+      </div>
+      <div class="file-row">
+        <span class="file-name">index.html</span>
+        <span class="file-role">The website structure. Never touch this unless changing layout design.</span>
+      </div>
+      <div class="file-row">
+        <span class="file-name">app.js</span>
+        <span class="file-role">The engine that reads content.js and builds the page. Never touch this.</span>
+      </div>
+      <div class="file-row">
+        <span class="file-name">admin/login.html</span>
+        <span class="file-role">This password-protected login page. Hidden from Google.</span>
+      </div>
+      <div class="file-row">
+        <span class="file-name">admin/guide.html</span>
+        <span class="file-role">This guide. Only accessible after logging in. Hidden from Google.</span>
+      </div>
+    </div>
+    <div class="tip"><strong>✅ Golden rule:</strong> Every day, the only file you open is <code>content.js</code>. That's it. Everything else runs automatically.</div>
+
+    <!-- ── GITHUB ── -->
+    <h2 id="github">🚀 GitHub Pages Setup (Free Hosting — Do This Once)</h2>
+    <div class="tip"><strong>Cost: £0 / $0 forever.</strong> GitHub Pages is completely free. Your site lives at <code>your-username.github.io/curiositas-ai</code> — or point your <code>curiositas.ai</code> domain to it (~$10/year for the domain only).</div>
+
+    <div class="steps">
+      <div class="step"><div class="step-num">1</div><div class="step-body"><strong>Create a free GitHub account</strong>Go to <a href="https://github.com" target="_blank" style="color:var(--green)">github.com</a> → Sign up. Free.</div></div>
+      <div class="step"><div class="step-num">2</div><div class="step-body"><strong>Create a new repository</strong>Click the green "New" button. Name it <code>curiositas-ai</code>. Set to Public. Click "Create repository".</div></div>
+      <div class="step"><div class="step-num">3</div><div class="step-body"><strong>Upload all your site files</strong>Click "uploading an existing file". Drag every file from your downloaded folder. Click "Commit changes".</div></div>
+      <div class="step"><div class="step-num">4</div><div class="step-body"><strong>Turn on GitHub Pages</strong>Settings → Pages → Source → select "main" branch → Save. Live in ~30 seconds.</div></div>
+    </div>
+
+    <h3>Connect your own domain (curiositas.ai)</h3>
+    <div class="steps">
+      <div class="step"><div class="step-num">1</div><div class="step-body"><strong>Buy the domain</strong>Try <a href="https://namecheap.com" target="_blank" style="color:var(--green)">Namecheap</a> or <a href="https://porkbun.com" target="_blank" style="color:var(--green)">Porkbun</a> — both are cheap (~$10/year).</div></div>
+      <div class="step"><div class="step-num">2</div><div class="step-body"><strong>Point DNS to GitHub</strong>In your domain registrar, add these A records:<br/><code>185.199.108.153</code>, <code>185.199.109.153</code>, <code>185.199.110.153</code>, <code>185.199.111.153</code></div></div>
+      <div class="step"><div class="step-num">3</div><div class="step-body"><strong>Set custom domain in GitHub</strong>Settings → Pages → Custom domain → type <code>curiositas.ai</code> → Save. Tick "Enforce HTTPS".</div></div>
+    </div>
+
+    <!-- ── DAILY UPDATES ── -->
+    <h2 id="daily">⚡ Daily Updates (2 Minutes)</h2>
+    <div class="steps">
+      <div class="step"><div class="step-num">1</div><div class="step-body"><strong>Open content.js in any text editor</strong>Notepad (Windows), TextEdit (Mac), or the free <a href="https://code.visualstudio.com" target="_blank" style="color:var(--green)">VS Code</a> editor works great.</div></div>
+      <div class="step"><div class="step-num">2</div><div class="step-body"><strong>Make your change</strong>Edit a lesson title, add a FAQ, update intro text — whatever you want.</div></div>
+      <div class="step"><div class="step-num">3</div><div class="step-body"><strong>Upload to GitHub</strong>Go to your repository → click <code>content.js</code> → click the pencil icon → select all (Ctrl+A) → paste your updated file → "Commit changes". Done.</div></div>
+    </div>
+    <div class="tip"><strong>Even faster:</strong> Install <a href="https://desktop.github.com" target="_blank" style="color:var(--green)">GitHub Desktop</a> (free app). Save your file, click Sync. 5 seconds total.</div>
+
+    <!-- ── ADD LESSON ── -->
+    <h2 id="lessons">📚 Add a New Lesson</h2>
+    <p>Open <code>content.js</code>. Find the <code>lessons:</code> section. Before the closing <code>]</code>, paste:</p>
+<pre>{
+  <span class="hl">title:</span>    <span class="hl">"Your New Lesson Title"</span>,
+  <span class="hl">topic:</span>    <span class="hl">"Prompt Engineering"</span>,  <span class="cm">// or "How AI Works"</span>
+  <span class="hl">duration:</span> <span class="hl">"30 min"</span>,
+  <span class="hl">note:</span>     <span class="hl">"No background needed"</span>,
+  <span class="hl">level:</span>    <span class="hl">"starter"</span>,  <span class="cm">// starter | explorer | builder</span>
+  <span class="hl">link:</span>     <span class="hl">"lessons/lesson-11.html"</span>,  <span class="cm">// optional: link to full lesson page</span>
+},</pre>
+    <div class="warn"><strong>Important:</strong> Every block needs a comma <code>,</code> at the end — except the very last lesson in the list.</div>
+
+    <!-- ── EDIT CONTENT ── -->
+    <h2 id="edit">✏️ Edit Existing Content</h2>
+    <table>
+      <thead><tr><th>What to change</th><th>Where to find it in content.js</th></tr></thead>
+      <tbody>
+        <tr><td>Site title / tagline</td><td><code>meta: { siteName, tagline }</code></td></tr>
+        <tr><td>Header text</td><td><code>header: { eyebrow, title, subtitle, description }</code></td></tr>
+        <tr><td>Intro paragraphs</td><td><code>intro: { paragraphs: [...] }</code></td></tr>
+        <tr><td>Inspirational quote</td><td><code>intro: { quote: { text, author } }</code></td></tr>
+        <tr><td>The 3 explainer boxes</td><td><code>explainers: [...]</code></td></tr>
+        <tr><td>Topic cards</td><td><code>topics: [...]</code></td></tr>
+        <tr><td>Lessons list</td><td><code>lessons: [...]</code></td></tr>
+        <tr><td>Resource cards</td><td><code>resources: [...]</code></td></tr>
+        <tr><td>Booking perks list</td><td><code>booking: { perks: [...] }</code></td></tr>
+        <tr><td>FAQ questions</td><td><code>faq: [...]</code></td></tr>
+        <tr><td>About section text</td><td><code>about: { paragraphs: [...] }</code></td></tr>
+        <tr><td>Stats (10 lessons, 2 topics…)</td><td><code>about: { stats: [...] }</code></td></tr>
+      </tbody>
+    </table>
+
+    <!-- ── FAQ ── -->
+    <h2 id="faq">❓ Add or Edit a FAQ</h2>
+    <p>Find <code>faq:</code> in <code>content.js</code> and add a block:</p>
+<pre>{
+  <span class="hl">q:</span> <span class="hl">"Your new question?"</span>,
+  <span class="hl">a:</span> <span class="hl">"Your answer goes here in plain English."</span>,
+},</pre>
+
+    <!-- ── RESOURCES ── -->
+    <h2 id="resources">📎 Add a Resource Card</h2>
+    <p>Find <code>resources:</code> and add:</p>
+<pre>{
+  <span class="hl">emoji:</span> <span class="hl">"🎯"</span>,
+  <span class="hl">title:</span> <span class="hl">"My New Guide"</span>,
+  <span class="hl">body:</span>  <span class="hl">"Short description of this resource."</span>,
+  <span class="hl">label:</span> <span class="hl">"Free Guide"</span>,
+  <span class="hl">link:</span>  <span class="hl">"my-new-guide.html"</span>,
+},</pre>
+
+    <!-- ── ANALYTICS ── -->
+    <h2 id="analytics">📊 Google Analytics Setup</h2>
+    <div class="steps">
+      <div class="step"><div class="step-num">1</div><div class="step-body"><strong>Go to analytics.google.com</strong>Sign in with your Google account → Start measuring.</div></div>
+      <div class="step"><div class="step-num">2</div><div class="step-body"><strong>Create a property</strong>Name: "Curiositas.ai" · Platform: Web · Enter your URL.</div></div>
+      <div class="step"><div class="step-num">3</div><div class="step-body"><strong>Copy your Measurement ID</strong>Looks like <code>G-XXXXXXXXXX</code>.</div></div>
+      <div class="step"><div class="step-num">4</div><div class="step-body"><strong>Paste into content.js</strong>Find <code>gaId: "G-XXXXXXXXXX"</code> → replace with your real ID → save → upload. Analytics is live.</div></div>
+    </div>
+    <h3>What gets tracked automatically</h3>
+    <table>
+      <thead><tr><th>Event</th><th>What it measures</th></tr></thead>
+      <tbody>
+        <tr><td>Page views</td><td>Total visitors and sessions</td></tr>
+        <tr><td>Scroll depth</td><td>25%, 50%, 75%, 90% — how far people read</td></tr>
+        <tr><td>Nav clicks</td><td>Which sections people navigate to</td></tr>
+        <tr><td>Lesson clicks</td><td>Which lessons people click on</td></tr>
+        <tr><td>Resource clicks</td><td>Which downloads are popular</td></tr>
+        <tr><td>FAQ opens</td><td>Which questions people ask most</td></tr>
+        <tr><td>Booking requests</td><td>How many session requests submitted</td></tr>
+        <tr><td>ICS downloads</td><td>How many calendar invites downloaded</td></tr>
+      </tbody>
+    </table>
+
+    <!-- ── ADSENSE ── -->
+    <h2 id="adsense">💵 Google AdSense Setup</h2>
+    <div class="tip"><strong>Your site already has 3 ad slots pre-built.</strong> You just need to be approved by Google, then paste one ID and ads appear automatically everywhere.</div>
+    <div class="steps">
+      <div class="step"><div class="step-num">1</div><div class="step-body"><strong>Apply at adsense.google.com</strong>You need real content, a privacy policy page, and some traffic. Apply once you have ~20+ lessons and regular visitors.</div></div>
+      <div class="step"><div class="step-num">2</div><div class="step-body"><strong>Get your Publisher ID</strong>Looks like <code>ca-pub-1234567890123456</code>.</div></div>
+      <div class="step"><div class="step-num">3</div><div class="step-body"><strong>Paste into content.js</strong>Find <code>adsenseId: ""</code> → paste your ID between the quotes → save → upload. All 3 ad slots activate automatically.</div></div>
+    </div>
+    <p>Ad slots are placed: (1) below the nav bar, (2) mid-page between lessons and topics, (3) above the booking section.</p>
+
+    <!-- ── MONETISE ── -->
+    <h2 id="monetise">💰 Earn Money — Your Roadmap</h2>
+    <table>
+      <thead><tr><th>Stage</th><th>Action</th><th>When</th><th>Potential</th></tr></thead>
+      <tbody>
+        <tr><td><strong>1 · Traffic</strong></td><td>Post on Reddit (r/learnmachinelearning, r/ChatGPT), LinkedIn, answer AI questions with your link</td><td>Now</td><td>Building audience</td></tr>
+        <tr><td><strong>2 · AdSense</strong> <span class="badge badge-free">free</span></td><td>Apply once you have 30+ days of real content and traffic. Paste ID in content.js.</td><td>1–3 months</td><td>£2–£50/mo at 1k visitors</td></tr>
+        <tr><td><strong>3 · Affiliate</strong> <span class="badge badge-free">free</span></td><td>Recommend ChatGPT Plus, Notion, Grammarly with affiliate links in your reading list</td><td>Once content is up</td><td>£10–£200/mo at scale</td></tr>
+        <tr><td><strong>4 · Premium PDFs</strong> <span class="badge badge-paid">low effort</span></td><td>Sell deeper guides on Gumroad (free to use) for £5–£15 each</td><td>3–6 months in</td><td>£50–£500/mo</td></tr>
+        <tr><td><strong>5 · Sponsorships</strong> <span class="badge badge-paid">high value</span></td><td>AI companies pay educators. Reach out once at 1k+ monthly visitors.</td><td>1k+ visitors/mo</td><td>£100–£2,000/mo</td></tr>
+      </tbody>
+    </table>
+    <div class="tip"><strong>Key insight:</strong> Google Analytics will show you which lessons get the most traffic. Write more of those topics. That's how you grow.</div>
+
+    <!-- ── TROUBLESHOOT ── -->
+    <h2 id="troubleshoot">🆘 Troubleshooting</h2>
+    <h3>Site looks broken after editing content.js</h3>
+    <div class="danger"><strong>Almost always:</strong> a missing or extra comma. Check every lesson/FAQ block ends with <code>},</code> — except the last one which ends with just <code>}</code>. Undo your last change (Ctrl+Z) and try again carefully.</div>
+    <h3>Changes not showing on live site</h3>
+    <p>GitHub Pages takes up to 2 minutes. Hard refresh: <strong>Ctrl+Shift+R</strong> (Windows) or <strong>Cmd+Shift+R</strong> (Mac).</p>
+    <h3>Adding a full lesson page</h3>
+    <p>Create <code>lessons/lesson-11.html</code> using <code>lessons/lesson-01.html</code> as a template. Then in <code>content.js</code> add <code>link: "lessons/lesson-11.html"</code> to that lesson block — it becomes clickable automatically.</p>
+    <h3>Someone found the admin page</h3>
+    <p>Change the password in <code>admin/login.html</code> (find the line <code>const OWNER_PASSWORD =</code>). The page is already blocked from Google — no one can find it by searching.</p>
+
+    <!-- ── PASSWORD ── -->
+    <h2 id="password">🔑 Change Your Admin Password</h2>
+    <p>Open <code>admin/login.html</code> in a text editor. Find this line near the top:</p>
+<pre>const OWNER_PASSWORD = <span class="hl">"Curiositas2025!"</span>;</pre>
+    <p>Replace <code>Curiositas2025!</code> with your new password. Save and upload. Done.</p>
+    <div class="tip"><strong>Good password tips:</strong> Mix uppercase, lowercase, numbers, and a symbol. At least 12 characters. Example: <code>AIlearning#2025</code></div>
+    <div class="warn"><strong>Note:</strong> This is a client-side password — it protects casual visitors, not determined hackers. The admin pages are not linked from anywhere public and are blocked from Google, so the chance of anyone finding them is extremely low. For higher security in future, consider moving to a platform with server-side auth (Netlify, Vercel).</div>
+
+  </main>
+</div>
+
+<script>
+  // ── AUTH CHECK — runs before page shows ──
+  (function(){
+    const token = sessionStorage.getItem('cai_owner_token');
+    const expected = btoa('curiositas-owner-' + new Date().toDateString());
+    if (token !== expected) {
+      window.location.replace('login.html');
+      return;
+    }
+    document.getElementById('auth-wall').style.display = 'none';
+  })();
+
+  function logout() {
+    sessionStorage.removeItem('cai_owner_token');
+    window.location.replace('login.html');
+  }
+
+  function setActive(el) {
+    document.querySelectorAll('aside nav a').forEach(a => a.classList.remove('active'));
+    el.classList.add('active');
+  }
+
+  // Highlight active section on scroll
+  const sections = document.querySelectorAll('main h2[id]');
+  const navLinks  = document.querySelectorAll('aside nav a');
+  window.addEventListener('scroll', () => {
+    let cur = '';
+    sections.forEach(s => { if(window.scrollY >= s.offsetTop - 140) cur = s.id; });
+    navLinks.forEach(a => {
+      const href = (a.getAttribute('href')||'').replace('#','');
+      a.classList.toggle('active', href === cur);
+    });
+  }, {passive:true});
+</script>
+</body>
+</html>
